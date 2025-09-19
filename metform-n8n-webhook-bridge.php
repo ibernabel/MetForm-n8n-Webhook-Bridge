@@ -32,7 +32,7 @@ class MetFormN8nWebhook {
         }
         
         // Hook into MetForm submissions
-        add_action('metform_after_submit', [$this, 'handle_form_submission'], 10, 2);
+        add_action('metform_after_store_form_data', [$this, 'handle_form_submission'], 10, 2);
         
         // Add admin menu and settings
         add_action('admin_menu', [$this, 'add_admin_menu']);
