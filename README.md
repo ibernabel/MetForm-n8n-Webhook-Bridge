@@ -23,7 +23,7 @@ A lightweight WordPress plugin that connects **MetForm form submissions** direct
 ### 1. Installation
 
 1. Download the plugin files
-2. Upload to `/wp-content/plugins/metform-n8n-webhook/`
+2. Upload to `/wp-content/plugins/metform-n8n-webhook-bridge/`
 3. Activate the plugin through the WordPress admin
 
 ### 2. WordPress Configuration
