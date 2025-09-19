@@ -126,7 +126,7 @@ Found a bug or have a feature request? Please create an issue or submit a pull r
 
 ## 📄 License
 
-This plugin is released under the GPL v2 or later.
+This plugin is released under the MIT license.
 
 ## 📞 Support
 
