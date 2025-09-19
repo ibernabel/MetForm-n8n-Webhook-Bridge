@@ -3,10 +3,13 @@
  * Plugin Name: MetForm → n8n Webhook Bridge
  * Description: Sends MetForm data to n8n via webhook immediately and securely.
  * Version: 2.0
- * Author: Your Name
+ * Plugin URI: https://github.com/ibernabel/metform-n8n-webhook-bridge
+ * Author: Idequel Bernabel
+ * Author URI: https://github.com/ibernabel
+ * License: MIT
+ * License URI: https://opensource.org/licenses/MIT
  * Text Domain: metform-n8n-webhook
  */
-
 if (!defined('ABSPATH')) {
     exit; // Security check
 }
