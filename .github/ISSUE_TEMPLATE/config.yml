@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/ibernabel/metform-n8n-webhook-bridge/blob/main/README.md
+    about: Check our comprehensive documentation first
+  - name: 🗺️ Roadmap
+    url: https://github.com/ibernabel/metform-n8n-webhook-bridge/blob/main/PLAN.md
+    about: See what features are planned for future versions
+  - name: 🤝 Contributing
+    url: https://github.com/ibernabel/metform-n8n-webhook-bridge/blob/main/CONTRIBUTING.md
+    about: Learn how to contribute to this project

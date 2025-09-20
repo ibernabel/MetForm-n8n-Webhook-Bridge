@@ -1,0 +1,89 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  php-tests:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.0', '8.1', '8.2']
+        wordpress-version: ['6.0', '6.3', 'latest']
+    
+    name: PHP ${{ matrix.php-version }} - WP ${{ matrix.wordpress-version }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mysqli, zip, gd
+        tools: composer, phpcs, phpstan
+        
+    - name: Install dependencies
+      run: |
+        composer install --prefer-dist --no-progress --no-suggest
+        
+    - name: PHP Syntax Check
+      run: find . -name "*.php" -not -path "./vendor/*" | xargs -I {} php -l {}
+      
+    - name: WordPress Coding Standards
+      run: phpcs --standard=WordPress --extensions=php --ignore=vendor/ .
+      
+    - name: PHP Static Analysis
+      run: phpstan analyse --level=5 *.php
+      
+    - name: Setup WordPress Test Environment
+      run: |
+        bash bin/install-wp-tests.sh wordpress_test root '' localhost ${{ matrix.wordpress-version }}
+        
+    - name: Run PHPUnit Tests
+      run: vendor/bin/phpunit
+
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Security Scan
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run security scan
+      uses: securecodewarrior/github-action-add-sarif@v1
+      with:
+        sarif-file: 'security-scan-results.sarif'
+        
+  code-quality:
+    runs-on: ubuntu-latest
+    name: Code Quality
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        tools: composer, phpmd
+        
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+      
+    - name: PHP Mess Detector
+      run: phpmd . text phpmd.xml --exclude vendor/
+      
+    - name: Check file permissions
+      run: |
+        find . -name "*.php" -perm /111 -not -path "./vendor/*" | while read file; do
+          echo "Executable PHP file found: $file"
+          exit 1
+        done

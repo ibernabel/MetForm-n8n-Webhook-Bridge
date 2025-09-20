@@ -1,0 +1,52 @@
+name: WordPress Plugin Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  plugin-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        
+    - name: Install WordPress Plugin Check Tool
+      run: |
+        composer global require wordpress/plugin-check
+        
+    - name: Run WordPress Plugin Check
+      run: |
+        ~/.composer/vendor/bin/plugin-check . --format=json > plugin-check-results.json
+        
+    - name: Display results
+      run: cat plugin-check-results.json
+      
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      with:
+        name: plugin-check-results
+        path: plugin-check-results.json
+
+  compatibility-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: PHP Compatibility Check
+      uses: php-actions/phpcompat@v1
+      with:
+        php-version: '7.4'
+        target: '8.2'
+        path: '.'
+        exclude: 'vendor'

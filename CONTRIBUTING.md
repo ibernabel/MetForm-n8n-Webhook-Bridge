@@ -208,7 +208,7 @@ Documentation improvements are always welcome! Areas that need attention:
 
 We welcome translation contributions:
 
-1. **Text Domain**: `metform-n8n-webhook`
+1. **Text Domain**: `metform-n8n-webhook-bridge`
 2. **POT File**: Will be generated from the code
 3. **Languages Needed**: All languages welcome!
 
@@ -216,9 +216,9 @@ We welcome translation contributions:
 
 ```php
 // Use WordPress i18n functions
-__('Text to translate', 'metform-n8n-webhook');
-_e('Text to translate and echo', 'metform-n8n-webhook');
-esc_html__('Text to translate and escape', 'metform-n8n-webhook');
+__('Text to translate', 'metform-n8n-webhook-bridge');
+_e('Text to translate and echo', 'metform-n8n-webhook-bridge');
+esc_html__('Text to translate and escape', 'metform-n8n-webhook-bridge');
 ```
 
 ## 🏷️ Pull Request Guidelines

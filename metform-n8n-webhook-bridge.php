@@ -8,7 +8,7 @@
  * Author URI: https://github.com/ibernabel
  * License: MIT
  * License URI: https://opensource.org/licenses/MIT
- * Text Domain: metform-n8n-webhook
+ * Text Domain: metform-n8n-webhook-bridge
  */
 if (!defined('ABSPATH')) {
     exit; // Security check

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ruleset name="MetForm n8n Webhook">
+    <description>Coding standards for MetForm n8n Webhook plugin</description>
+    
+    <file>.</file>
+    
+    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>node_modules/*</exclude-pattern>
+    <exclude-pattern>tests/*</exclude-pattern>
+    
+    <rule ref="WordPress">
+        <exclude name="WordPress.Files.FileName"/>
+        <exclude name="WordPress.NamingConventions.ValidVariableName"/>
+    </rule>
+    
+    <rule ref="WordPress-Extra"/>
+    <rule ref="WordPress-Docs"/>
+    
+    <config name="minimum_supported_wp_version" value="5.0"/>
+    <config name="testVersion" value="7.4-"/>
+</ruleset>

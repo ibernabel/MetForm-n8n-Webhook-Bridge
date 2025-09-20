@@ -1,0 +1,77 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        
+    - name: Install dependencies
+      run: composer install --no-dev --optimize-autoloader
+      
+    - name: Create plugin zip
+      run: |
+        zip -r metform-n8n-webhook-bridge.zip . \
+          -x "*.git*" \
+          -x "node_modules/*" \
+          -x "tests/*" \
+          -x "*.github*" \
+          -x "composer.json" \
+          -x "composer.lock" \
+          -x "phpcs.xml" \
+          -x "phpunit.xml" \
+          -x "*.md" \
+          -x "bin/*"
+          
+    - name: Extract version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release v${{ steps.get_version.outputs.VERSION }}
+        body: |
+          ## Changes in v${{ steps.get_version.outputs.VERSION }}
+          
+          See [CHANGELOG.md](CHANGELOG.md) for detailed changes.
+          
+          ## Installation
+          1. Download the `metform-n8n-webhook-bridge.zip` file below
+          2. In WordPress admin, go to Plugins > Add New > Upload Plugin
+          3. Upload the zip file and activate the plugin
+          4. Configure in Settings > MetForm → n8n
+          
+          ## Requirements
+          - WordPress 5.0+
+          - MetForm plugin (Free or Pro)
+          - n8n instance with webhook endpoint
+          - PHP 7.4+
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./metform-n8n-webhook-bridge.zip
+        asset_name: metform-n8n-webhook-bridge.zip
+        asset_content_type: application/zip
